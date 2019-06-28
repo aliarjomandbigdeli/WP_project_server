@@ -15,7 +15,7 @@ mongoose.connect(`mongodb://${server}/${database}`)
 mongoose.set('useCreateIndex', true);
 
 let restaurantSchema = new mongoose.Schema({
-    // id: String,
+    id: String,
     name: String,
     logo: String,
 });

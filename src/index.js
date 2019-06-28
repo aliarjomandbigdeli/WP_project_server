@@ -1,12 +1,13 @@
 let express = require('express');
 let app = express();
 let restaurantRoute = require('./routes/restaurant');
+let path = require('path');
 let bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 
 
-// app.use(express.json());
+app.use(express.json());
 
 app.use(restaurantRoute);
 
