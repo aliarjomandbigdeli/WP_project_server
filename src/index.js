@@ -9,6 +9,12 @@ app.use(bodyParser.json());
 
 app.use(express.json());
 
+// define middleware to log every request
+app.use((req, res, next) => {
+    console.log(`${new Date().toString()} => ${req.originalUrl}`, req.body)
+    next()
+});
+
 app.use(restaurantRoute);
 
 app.get('/', (req, res) => {
