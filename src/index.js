@@ -2,10 +2,24 @@ let express = require('express');
 let app = express();
 let restaurantRoute = require('./routes/restaurant');
 let path = require('path');
-let bodyParser = require('body-parser');
 
-app.use(bodyParser.json());
+//-----down---connect to db--------
+let mongoose = require('mongoose');
 
+const server = '127.0.0.1:27017';
+const database = 'testDB';
+
+mongoose.connect(`mongodb://${server}/${database}`,{useNewUrlParser: true})
+    .then(() => {
+        console.log('Database connection successful')
+    })
+    .catch(err => {
+        console.error('Database connection error')
+    });
+
+// mongoose.connect(`mongodb://${user}:${passwd}@${server}:${port}/${db}`, {'useNewUrlParser': true})
+mongoose.set('useCreateIndex', true);
+//-----up-----connect to db--------
 
 app.use(express.json());
 
