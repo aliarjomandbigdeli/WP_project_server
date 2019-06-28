@@ -8,6 +8,16 @@ router.get('/api/restaurants/:id', (req, res) => {
     res.send(`You have requested a restaurant its id is ${req.params.id}`)
 });
 
+router.get('/api/restaurants', (req, res) => {
+    RestaurantModel.find()
+        .then(doc =>{
+            res.status(201).send(doc)
+        })
+        .catch(err=>{
+            res.status(500).json(err)
+        });
+});
+
 router.post('/api/restaurants', (req, res) => {
     if (!req.body) {
         return res.status(400).send('Request body is missing')
