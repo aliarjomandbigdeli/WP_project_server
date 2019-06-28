@@ -17,13 +17,14 @@ app.use((req, res, next) => {
 
 app.use(restaurantRoute);
 
-app.get('/', (req, res) => {
-    res.send('Web Programming Course server')
-});
+app.use(express.static('public'));
+// app.get('/', (req, res) => {
+//     res.send('Web Programming Course server')
+// });
 
 // Handler for 404 - Resource Not Found
 app.use((req, res, next) => {
-    res.status(404).send('We think you are lost!')
+    res.status(404).send('Not found Error!')
 });
 
 // Handler for Error 500
