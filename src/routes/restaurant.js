@@ -41,7 +41,7 @@ router.post('/api/restaurants', (req, res) => {
     //     logo: 'shandiz-jordan-logo'
     // };
 
-    let model = new RestaurantModel(req.body);
+    let model = new RestaurantModel.model(req.body);
     model.save()
         .then(doc => {
             if (!doc || doc.length === 0) {
