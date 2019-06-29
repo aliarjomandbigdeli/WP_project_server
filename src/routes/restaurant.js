@@ -5,7 +5,7 @@ let router = express.Router();
 // Params property on the request object
 // localhost:3000/api/restaurants/shandiz-jordan
 router.get('/api/restaurants/:id', (req, res) => {
-    RestaurantModel.findOne({
+    RestaurantModel.model.findOne({
         id: req.params.id
     })
         .then(doc => {
@@ -17,13 +17,26 @@ router.get('/api/restaurants/:id', (req, res) => {
 });
 
 router.get('/api/restaurants', (req, res) => {
-    RestaurantModel.find()
-        .then(doc =>{
-            res.status(201).send(doc)
+    if (req.query && req.query.city && req.query.area) {
+        RestaurantModel.model.find({
+            "address.city": req.query.city,
+            "address.area": req.query.area
         })
-        .catch(err=>{
-            res.status(500).json(err)
-        });
+            .then(doc => {
+                res.status(201).send(doc)
+            })
+            .catch(err => {
+                res.status(500).json(err)
+            });
+    } else {
+        RestaurantModel.model.find()
+            .then(doc => {
+                res.status(201).send(doc)
+            })
+            .catch(err => {
+                res.status(500).json(err)
+            });
+    }
 });
 
 router.post('/api/restaurants', (req, res) => {
