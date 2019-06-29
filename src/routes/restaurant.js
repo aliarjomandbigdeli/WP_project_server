@@ -18,16 +18,30 @@ router.get('/api/restaurants/:id', (req, res) => {
 
 router.get('/api/restaurants', (req, res) => {
     if (req.query && req.query.city && req.query.area) {
-        RestaurantModel.model.find({
-            "address.city": req.query.city,
-            "address.area": req.query.area
-        })
-            .then(doc => {
-                res.status(201).send(doc)
+        if (req.query.category) {
+            RestaurantModel.model.find({
+                "address.city": req.query.city,
+                "address.area": req.query.area,
+                'categories.name': { $in: req.query.category }
             })
-            .catch(err => {
-                res.status(500).json(err)
-            });
+                .then(doc => {
+                    res.status(201).send(doc)
+                })
+                .catch(err => {
+                    res.status(500).json(err)
+                });
+        } else {
+            RestaurantModel.model.find({
+                "address.city": req.query.city,
+                "address.area": req.query.area
+            })
+                .then(doc => {
+                    res.status(201).send(doc)
+                })
+                .catch(err => {
+                    res.status(500).json(err)
+                });
+        }
     } else {
         RestaurantModel.model.find()
             .then(doc => {
