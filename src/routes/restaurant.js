@@ -1,4 +1,5 @@
 let RestaurantModel = require('../models/restaurant.model');
+let CommentModel = require('../models/comment.model');
 let express = require('express');
 let router = express.Router();
 
@@ -6,6 +7,24 @@ router.get('/api/restaurants/:id/comments', (req, res) => {
     RestaurantModel.model.findOne({
         id: req.params.id
     }, 'comments')
+        .then(doc => {
+            res.json(doc)
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        });
+});
+
+router.post('/api/restaurants/:id/comments', (req, res) => {
+    if (!req.body) {
+        return res.status(400).send('Request body is missing')
+    }
+
+    let comment = new CommentModel.model(req.body);
+
+    RestaurantModel.model.findOneAndUpdate({
+        id: req.params.id
+    }, {$push: {comments: comment}})
         .then(doc => {
             res.json(doc)
         })
