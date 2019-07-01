@@ -2,6 +2,18 @@ let RestaurantModel = require('../models/restaurant.model');
 let express = require('express');
 let router = express.Router();
 
+router.get('/api/restaurants/:id/comments', (req, res) => {
+    RestaurantModel.model.findOne({
+        id: req.params.id
+    }, 'comments')
+        .then(doc => {
+            res.json(doc)
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        });
+});
+
 // Params property on the request object
 // localhost:3000/api/restaurants/shandiz-jordan
 router.get('/api/restaurants/:id', (req, res) => {
@@ -16,13 +28,14 @@ router.get('/api/restaurants/:id', (req, res) => {
         });
 });
 
+
 router.get('/api/restaurants', (req, res) => {
     if (req.query && req.query.city && req.query.area) {
         if (req.query.category) {
             RestaurantModel.model.find({
                 "address.city": req.query.city,
                 "address.area": req.query.area,
-                'categories.name': { $in: req.query.category }
+                'categories.name': {$in: req.query.category}
             })
                 .then(doc => {
                     res.status(201).send(doc)
