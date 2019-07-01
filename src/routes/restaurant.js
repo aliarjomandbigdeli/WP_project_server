@@ -85,6 +85,18 @@ router.get('/api/restaurants', (req, res) => {
     }
 });
 
+router.get('/api/restaurants/area/:city', (req, res) => {
+    RestaurantModel.model.find({
+        "address.city": req.params.city,
+    },'address.area')
+        .then(doc => {
+            res.status(201).send(doc)
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        });
+});
+
 router.post('/api/restaurants', (req, res) => {
     if (!req.body) {
         return res.status(400).send('Request body is missing')
