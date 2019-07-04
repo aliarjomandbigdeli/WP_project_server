@@ -10,12 +10,21 @@ let restaurantSchema = new mongoose.Schema({
     logo: String, // src of logo image
     openingTime: Number, // time of opening
     closingTime: Number, // time of closing
-    averageRate:Number, // average of comments rate
-    // averageRate: {$avg: {"$comments.quality"}},
+    averageRate: Number, // average of comments rate
     address: addressModel.schema,
     categories: [categoryModel.schema], // array of food categories. e.g. fastfood or irani
     foods: [foodModel.schema],
     comments: [commentModel.schema],
+});
+
+restaurantSchema.pre('save', function (next) {
+    // do stuff
+    let sum = 0;
+    for (let i = 0; i < this.comments.length; i++) {
+        sum += this.comments[i].quality;
+    }
+    this.averageRate = sum / this.comments.length;
+    next();
 });
 
 // module.exports = mongoose.model('Restaurant', restaurantSchema);
