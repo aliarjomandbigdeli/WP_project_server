@@ -85,10 +85,11 @@ router.get('/api/restaurants', (req, res) => {
     }
 });
 
-router.get('/api/restaurants/area/:city', (req, res) => {
+router.get('/api/restaurants/suggest/:city/:area', (req, res) => {
     RestaurantModel.model.find({
         "address.city": req.params.city,
-    },'address.area')
+        "address.area": {$regex: req.params.area}
+    }, 'address.area')
         .then(doc => {
             res.status(201).send(doc)
         })
